@@ -90,7 +90,7 @@ data_sample = [1,2.0,
 
 negate_kwords = ['','!']
 reverse_kwords = ['','r_']
-logical_kwords = ['in:', 'gt:', 'lt:', 'ge:', 'le:', 'eq:', 'sw:', 'ew:', 'bw:', 'iss:', 'iSS:', 'idj:','ir:']
+logical_kwords = ['in:', 'gt:', 'lt:', 'ge:', 'le:', 'eq:', 'sw:', 'ew:', 'bw:', 'sub:', 'sup:', 'disjoint:','ir:']
 
 all_kword_combinations = [f'{n}{r}{l}' for n in negate_kwords
      for r in reverse_kwords
@@ -136,7 +136,14 @@ convol_startswith = len([x for x in convol if x[14] in [True, False]])
 convol_endswith = len([x for x in convol if x[15] in [True, False]])
 convol_inrange = len([x for x in convol if x[16] in [True, False]])
 
-
+#convol_ints = [x for x in convol if (int == x[2]) & (int == x[3])]
+#convol_dt = [x for x in convol if (datetime.datetime == x[2]) & (datetime.datetime == x[3])];
+#convol_tm = [x for x in convol if (datetime.time == x[2]) & (datetime.time == x[3])];
+#convol_rg = [x for x in convol if (range == x[2]) & (range == x[3])];
+#convol_bytes = [x for x in convol if (bytes == x[2]) & (bytes == x[3])];
+#convol_ba = [x for x in convol if (bytearray == x[2]) & (bytearray == x[3])];
+#convol_arr = [x for x in convol if (array.array == x[2]) & (array.array == x[3])];
+#convol_nt = [x for x in convol if (type(None) is x[2]) & (type(None) is x[3])];
 c=sys.getsizeof(convol)
 print(c)
 pass
