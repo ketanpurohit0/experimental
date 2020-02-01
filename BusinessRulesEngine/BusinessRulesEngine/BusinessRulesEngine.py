@@ -4,6 +4,17 @@ import datetime
 import time
 import sys
 import timeit
+import pandas as pd
+
+def categorise_type(x):
+    if type(x) == bool:
+        if x == True:
+            return 1
+        else:
+            return -1
+    else:
+        return 0
+
 
 def x_in_y(x,y):
     try:
@@ -146,4 +157,10 @@ convol_inrange = len([x for x in convol if x[16] in [True, False]])
 #convol_nt = [x for x in convol if (type(None) is x[2]) & (type(None) is x[3])];
 c=sys.getsizeof(convol)
 print(c)
+
+# convol[3:] is one of True, False or Exception - categorise apporiately
+
+categorical_type_map = { str(t[0:2]) : tuple(map(categorise_type,t[4:])) for t  in convol}
+
+# convert convol into a pandas df
 pass
