@@ -76,13 +76,19 @@ $Label4.Font                     = 'Microsoft Sans Serif,10'
 $DataGridView1                   = New-Object system.Windows.Forms.DataGridView
 $DataGridView1.width             = 886
 $DataGridView1.height            = 303
-$DataGridView1Data = @(@("alm_out","Alter_Table_B1.sql","In Progress","2020-03-20 14:00 "),@("alm_udm","Create_Table_E1.sql","Succesfull","2020-03-20 15:15"))
+$DataGridView1.AllowUserToAddRows = $false
+$DataGridView1.AllowUserToDeleteRows = $false
+$DataGridView1Data = @(@("alm_out","Alter_Table_B1.sql","In Progress","2020-03-20 14:00:00 "),@("alm_udm","Create_Table_E1.sql","Succesfull","2020-03-20 15:15:30"))
 $DataGridView1.ColumnCount = 4
 $DataGridView1.ColumnHeadersVisible = $true
 $DataGridView1.Columns[0].Name = "Database"
+$DataGridView1.Columns[0].Width = 200
 $DataGridView1.Columns[1].Name = "File"
+$DataGridView1.Columns[1].Width = 300
 $DataGridView1.Columns[2].Name = "Status"
+$DataGridView1.Columns[2].Width = 200
 $DataGridView1.Columns[3].Name = "Time"
+$DataGridView1.Columns[3].Width = 143
 foreach ($row in $DataGridView1Data){
           $DataGridView1.Rows.Add($row)
       }
@@ -94,10 +100,17 @@ $C_VersionList.Add_SelectedIndexChanged({ OnSelectedIndexChanged $this $_ })
 $B_DeployVersion.Add_MouseClick({ OnDeployVersionMouseClick $this $_ })
 
 function OnDeployVersionMouseClick ($sender,$event) { 
-    $B_DeployVersion.text = $sender.SelectedText
+    $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $row = @("db", "sql", "status", $now)
+    $DataGridView1.Rows.Add($row)
 }
-function OnSelectedIndexChanged ($sender,$event) { }
-function OnDeployVersionClick ($sender,$event) { }
+
+
+function OnSelectedIndexChanged ($sender,$event) { 
+$B_DeployVersion.text = $sender.SelectedItem
+}
+
+
 
 
 #Write your logic code here
