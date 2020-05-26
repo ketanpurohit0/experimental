@@ -36,12 +36,13 @@ $Label3.location                 = New-Object System.Drawing.Point(656,66)
 $Label3.Font                     = 'Microsoft Sans Serif,10'
 
 $L_Environment                   = New-Object system.Windows.Forms.Label
-$L_Environment.text              = "Environment"
+$L_Environment.text              = "Environment 012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567"
 $L_Environment.AutoSize          = $true
-$L_Environment.width             = 200
+$L_Environment.width             = 886
 $L_Environment.height            = 10
 $L_Environment.location          = New-Object System.Drawing.Point(10,17)
 $L_Environment.Font              = 'Microsoft Sans Serif,10'
+$L_Environment.BackColor         = "LightBlue"
 
 $L_CHGTicket                     = New-Object system.Windows.Forms.TextBox
 $L_CHGTicket.multiline           = $false
