@@ -154,6 +154,10 @@ function OnDeployVersionMouseClick ($sender,$event) {
             $DataGridView1.Rows.Add($row)
 
             $L_Message.text = "Message: Release $($B_DeployVersion.Text) now completed.".PadRight(240)
+
+            
+            #$DataGridView1.Rows[$DataGridView1.Rows.Count-1].Cells[1].Value = 'FooBar'
+            #$DataGridView1.Rows[$DataGridView1.Rows.Count-1].Cells["Status"].Value = 'Completed'
         }
         else {
             $L_Message.text = "Message: Please Check The CheckBox".PadRight(240)
