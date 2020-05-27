@@ -131,8 +131,12 @@ $TAB_Page_SQL 					= New-Object 'System.Windows.Forms.TabPage'
 $TAB_Page_SQL.Text 				= "SQL Release TAB"
 $TAB_Page_SQL.Size				= "928,749"
 
+$TAB_Page_TBA 					= New-Object 'System.Windows.Forms.TabPage'
+$TAB_Page_TBA.Text 				= "TBA"
+$TAB_Page_TBA.Size				= "928,749"
+
 $RootLevel.controls.Add($TAB_Control)
-$TAB_Control.controls.Add($TAB_Page_SQL)
+$TAB_Control.controls.AddRange(@($TAB_Page_SQL,$TAB_Page_TBA))
 $TAB_Page_SQL.controls.AddRange(@($Label1,$Label2,$Label2a,$Label3,$L_Environment,$L_CHGTicket,$C_VersionList,$CheckBox1, $B_DeployVersion,$Label4,$DataGridView1,$L_Message))
 
 $C_VersionList.Add_SelectedIndexChanged({ OnSelectedIndexChanged $this $_ })
