@@ -28,6 +28,14 @@ $Label2.height                   = 10
 $Label2.location                 = New-Object System.Drawing.Point(254,66)
 $Label2.Font                     = 'Microsoft Sans Serif,10'
 
+$Label2a                          = New-Object system.Windows.Forms.Label
+$Label2a.text                     = "Enable"
+$Label2a.AutoSize                 = $true
+$Label2a.width                    = 25
+$Label2a.height                   = 10
+$Label2a.location                 = New-Object System.Drawing.Point(600,66)
+$Label2a.Font                     = 'Microsoft Sans Serif,10'
+
 $Label3                          = New-Object system.Windows.Forms.Label
 $Label3.text                     = "Deploy Version"
 $Label3.AutoSize                 = $true
@@ -59,6 +67,14 @@ $C_VersionList.height            = 20
 @('Version_1','Version_Feb_2020') | ForEach-Object {[void] $C_VersionList.Items.Add($_)}
 $C_VersionList.location          = New-Object System.Drawing.Point(253,88)
 $C_VersionList.Font              = 'Microsoft Sans Serif,10'
+
+$CheckBox1                       = New-Object system.Windows.Forms.CheckBox
+$CheckBox1.text                  = ""
+$CheckBox1.AutoSize              = $false
+$CheckBox1.width                 = 20
+$CheckBox1.height                = 20
+$CheckBox1.location              = New-Object System.Drawing.Point(600,89)
+$CheckBox1.Font                  = 'Microsoft Sans Serif,10'
 
 $B_DeployVersion                 = New-Object system.Windows.Forms.Button
 $B_DeployVersion.text            = "VersionSelected"
@@ -96,15 +112,20 @@ foreach ($row in $DataGridView1Data){
       }
 $DataGridView1.location          = New-Object System.Drawing.Point(10,168)
 
-$RootLevel.controls.AddRange(@($Label1,$Label2,$Label3,$L_Environment,$L_CHGTicket,$C_VersionList,$B_DeployVersion,$Label4,$DataGridView1))
+$RootLevel.controls.AddRange(@($Label1,$Label2,$Label2a,$Label3,$L_Environment,$L_CHGTicket,$C_VersionList,$CheckBox1, $B_DeployVersion,$Label4,$DataGridView1))
 
 $C_VersionList.Add_SelectedIndexChanged({ OnSelectedIndexChanged $this $_ })
 $B_DeployVersion.Add_MouseClick({ OnDeployVersionMouseClick $this $_ })
 
-function OnDeployVersionMouseClick ($sender,$event) { 
-    $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    $row = @("db", "sql", "status", $now)
-    $DataGridView1.Rows.Add($row)
+function OnDeployVersionMouseClick ($sender,$event) {
+    if ($CheckBox1.Checked -eq $true) { 
+        $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        $row = @("db", "sql", "status", $now)
+        $DataGridView1.Rows.Add($row)
+    }
+    else {
+        Write-Host "Please Check The CheckBox"
+    }
 }
 
 
