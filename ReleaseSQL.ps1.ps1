@@ -10,6 +10,7 @@ $RootLevel                       = New-Object system.Windows.Forms.Form
 $RootLevel.ClientSize            = '908,729'
 $RootLevel.text                  = "ETL Deployment GUI"
 $RootLevel.TopMost               = $false
+$RootLevel.add_Load({ OnFormLoad $this $_ })
 
 $Label1                          = New-Object system.Windows.Forms.Label
 $Label1.text                     = "CHG Ticket"
@@ -109,6 +110,10 @@ function OnDeployVersionMouseClick ($sender,$event) {
 
 function OnSelectedIndexChanged ($sender,$event) { 
 $B_DeployVersion.text = $sender.SelectedItem
+}
+
+function OnFormLoad ($sender, $event) {
+Write-Host "OnStart"
 }
 
 
