@@ -45,7 +45,7 @@ $Label3.location                 = New-Object System.Drawing.Point(656,66)
 $Label3.Font                     = 'Microsoft Sans Serif,10'
 
 $L_Environment                   = New-Object system.Windows.Forms.Label
-$L_Environment.text              = "Environment 012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567"
+$L_Environment.text              = "Environment:012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567"
 $L_Environment.AutoSize          = $true
 $L_Environment.width             = 886
 $L_Environment.height            = 10
@@ -112,19 +112,32 @@ foreach ($row in $DataGridView1Data){
       }
 $DataGridView1.location          = New-Object System.Drawing.Point(10,168)
 
-$RootLevel.controls.AddRange(@($Label1,$Label2,$Label2a,$Label3,$L_Environment,$L_CHGTicket,$C_VersionList,$CheckBox1, $B_DeployVersion,$Label4,$DataGridView1))
+$L_Message                   = New-Object system.Windows.Forms.Label
+$L_Message.text              = "Message:012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567"
+$L_Message.AutoSize          = $true
+$L_Message.width             = 886
+$L_Message.height            = 10
+$L_Message.location          = New-Object System.Drawing.Point(10,700)
+$L_Message.Font              = 'Microsoft Sans Serif,10'
+$L_Message.BackColor         = "LightBlue"
+
+$RootLevel.controls.AddRange(@($Label1,$Label2,$Label2a,$Label3,$L_Environment,$L_CHGTicket,$C_VersionList,$CheckBox1, $B_DeployVersion,$Label4,$DataGridView1,$L_Message))
 
 $C_VersionList.Add_SelectedIndexChanged({ OnSelectedIndexChanged $this $_ })
 $B_DeployVersion.Add_MouseClick({ OnDeployVersionMouseClick $this $_ })
 
 function OnDeployVersionMouseClick ($sender,$event) {
     if ($CheckBox1.Checked -eq $true) { 
+        $L_Message.text = "Message: Release $($L_CHGTicket.text) now in progress.."
+        
         $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $row = @("db", "sql", "status", $now)
         $DataGridView1.Rows.Add($row)
+
+        $L_Message.text = "Message: Release $($L_CHGTicket.text) now completed."
     }
     else {
-        Write-Host "Please Check The CheckBox"
+        $L_Message.text = "Message: Please Check The CheckBox"
     }
 }
 
