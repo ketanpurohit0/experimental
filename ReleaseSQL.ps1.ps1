@@ -18,7 +18,7 @@ $Label1.AutoSize                 = $true
 $Label1.width                    = 25
 $Label1.height                   = 10
 $Label1.location                 = New-Object System.Drawing.Point(49,66)
-$Label1.Font                     = 'Microsoft Sans Serif,10'
+$Label1.Font                     = 'Lucida Sans Typewriter,8'
 
 $Label2                          = New-Object system.Windows.Forms.Label
 $Label2.text                     = "Version List"
@@ -26,7 +26,7 @@ $Label2.AutoSize                 = $true
 $Label2.width                    = 25
 $Label2.height                   = 10
 $Label2.location                 = New-Object System.Drawing.Point(254,66)
-$Label2.Font                     = 'Microsoft Sans Serif,10'
+$Label2.Font                     = 'Lucida Sans Typewriter,8'
 
 $Label2a                          = New-Object system.Windows.Forms.Label
 $Label2a.text                     = "Enable"
@@ -34,7 +34,7 @@ $Label2a.AutoSize                 = $true
 $Label2a.width                    = 25
 $Label2a.height                   = 10
 $Label2a.location                 = New-Object System.Drawing.Point(600,66)
-$Label2a.Font                     = 'Microsoft Sans Serif,10'
+$Label2a.Font                     = 'Lucida Sans Typewriter,8'
 
 $Label3                          = New-Object system.Windows.Forms.Label
 $Label3.text                     = "Deploy Version"
@@ -42,7 +42,7 @@ $Label3.AutoSize                 = $true
 $Label3.width                    = 25
 $Label3.height                   = 10
 $Label3.location                 = New-Object System.Drawing.Point(656,66)
-$Label3.Font                     = 'Microsoft Sans Serif,10'
+$Label3.Font                     = 'Lucida Sans Typewriter,8'
 
 $L_Environment                   = New-Object system.Windows.Forms.Label
 $L_Environment.text              = "Environment:".PadRight(240)
@@ -50,7 +50,7 @@ $L_Environment.AutoSize          = $true
 $L_Environment.width             = 886
 $L_Environment.height            = 10
 $L_Environment.location          = New-Object System.Drawing.Point(10,17)
-$L_Environment.Font              = 'Microsoft Sans Serif,10'
+$L_Environment.Font              = 'Lucida Sans Typewriter,8'
 $L_Environment.BackColor         = "LightBlue"
 
 $L_CHGTicket                     = New-Object system.Windows.Forms.TextBox
@@ -58,7 +58,7 @@ $L_CHGTicket.multiline           = $false
 $L_CHGTicket.width               = 146
 $L_CHGTicket.height              = 20
 $L_CHGTicket.location            = New-Object System.Drawing.Point(48,89)
-$L_CHGTicket.Font                = 'Microsoft Sans Serif,10'
+$L_CHGTicket.Font                = 'Lucida Sans Typewriter,8'
 
 $C_VersionList                   = New-Object system.Windows.Forms.ComboBox
 $C_VersionList.text              = "Version"
@@ -66,7 +66,7 @@ $C_VersionList.width             = 342
 $C_VersionList.height            = 20
 @('Version_1','Version_Feb_2020') | ForEach-Object {[void] $C_VersionList.Items.Add($_)}
 $C_VersionList.location          = New-Object System.Drawing.Point(253,88)
-$C_VersionList.Font              = 'Microsoft Sans Serif,10'
+$C_VersionList.Font              = 'Lucida Sans Typewriter,8'
 
 $CheckBox1                       = New-Object system.Windows.Forms.CheckBox
 $CheckBox1.text                  = ""
@@ -74,14 +74,14 @@ $CheckBox1.AutoSize              = $false
 $CheckBox1.width                 = 20
 $CheckBox1.height                = 20
 $CheckBox1.location              = New-Object System.Drawing.Point(600,89)
-$CheckBox1.Font                  = 'Microsoft Sans Serif,10'
+$CheckBox1.Font                  = 'Lucida Sans Typewriter,8'
 
 $B_DeployVersion                 = New-Object system.Windows.Forms.Button
 $B_DeployVersion.text            = "VersionNotYetSelected"
 $B_DeployVersion.width           = 241
 $B_DeployVersion.height          = 20
 $B_DeployVersion.location        = New-Object System.Drawing.Point(654,89)
-$B_DeployVersion.Font            = 'Microsoft Sans Serif,10'
+$B_DeployVersion.Font            = 'Lucida Sans Typewriter,8'
 
 $Label4                          = New-Object system.Windows.Forms.Label
 $Label4.text                     = "SQL Deploy Log"
@@ -89,7 +89,7 @@ $Label4.AutoSize                 = $true
 $Label4.width                    = 25
 $Label4.height                   = 10
 $Label4.location                 = New-Object System.Drawing.Point(17,147)
-$Label4.Font                     = 'Microsoft Sans Serif,10'
+$Label4.Font                     = 'Lucida Sans Typewriter,8'
 
 $DataGridView1                   = New-Object system.Windows.Forms.DataGridView
 $DataGridView1.width             = 886
@@ -118,7 +118,7 @@ $L_Message.AutoSize          = $true
 $L_Message.width             = 886
 $L_Message.height            = 10
 $L_Message.location          = New-Object System.Drawing.Point(10,700)
-$L_Message.Font              = 'Microsoft Sans Serif,9'
+$L_Message.Font              = 'Lucida Sans Typewriter,8'
 $L_Message.BackColor         = "LightBlue"
 
 $TAB_Control 					= New-Object 'System.Windows.Forms.TabControl'
