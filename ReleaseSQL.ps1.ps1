@@ -8,7 +8,7 @@ Add-Type -AssemblyName System.Windows.Forms
 
 $RootLevel                       = New-Object system.Windows.Forms.Form
 $RootLevel.ClientSize            = '948,769'
-$RootLevel.text                  = "ETL Deployment GUI"
+$RootLevel.text                  = "ETL SQL Deployment GUI"
 $RootLevel.TopMost               = $false
 $RootLevel.add_Load({ OnFormLoad $this $_ })
 
