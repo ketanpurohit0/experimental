@@ -51,7 +51,7 @@ $L_Environment.width             = 886
 $L_Environment.height            = 10
 $L_Environment.location          = New-Object System.Drawing.Point(10,17)
 $L_Environment.Font              = 'Lucida Sans Typewriter,8'
-$L_Environment.BackColor         = "LightBlue"
+$L_Environment.BackColor         = "LightBlue"  # Depending on Env value use DEV/SIT - LightGreen, UAT: LightBlue, PRE: Orange, PRD: Red
 
 $L_CHGTicket                     = New-Object system.Windows.Forms.TextBox
 $L_CHGTicket.multiline           = $false
