@@ -152,7 +152,7 @@ function OnDeployVersionMouseClick ($sender,$event) {
             $L_Message.text = "Message: Release $($B_DeployVersion.Text) now in progress..".PadRight(240)
         
             $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-            $row = @("db", "sql", "status", $now)
+            $row = @("db", "sql", "status", "Log", $now)
             $DataGridView1.Rows.Add($row)
 
             $L_Message.text = "Message: Release $($B_DeployVersion.Text) now completed.".PadRight(240)
@@ -160,6 +160,7 @@ function OnDeployVersionMouseClick ($sender,$event) {
             
             #$DataGridView1.Rows[$DataGridView1.Rows.Count-1].Cells[1].Value = 'FooBar'
             #$DataGridView1.Rows[$DataGridView1.Rows.Count-1].Cells["Status"].Value = 'Completed'
+            #$DataGridView1.Rows[$DataGridView1.Rows.Count-1].Cells["Status"].Style.BackColor = 'Blue'
         }
         else {
             $L_Message.text = "Message: Please Check The CheckBox".PadRight(240)
