@@ -7,7 +7,7 @@ Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
 $RootLevel                       = New-Object system.Windows.Forms.Form
-$RootLevel.ClientSize            = '948,769'
+$RootLevel.ClientSize            = '1200,769'
 $RootLevel.text                  = "ETL SQL Deployment GUI"
 $RootLevel.TopMost               = $false
 $RootLevel.add_Load({ OnFormLoad $this $_ })
@@ -47,7 +47,7 @@ $Label3.Font                     = 'Lucida Sans Typewriter,8'
 $L_Environment                   = New-Object system.Windows.Forms.Label
 $L_Environment.text              = "Environment:".PadRight(240)
 $L_Environment.AutoSize          = $true
-$L_Environment.width             = 886
+$L_Environment.width             = 1100
 $L_Environment.height            = 10
 $L_Environment.location          = New-Object System.Drawing.Point(10,17)
 $L_Environment.Font              = 'Lucida Sans Typewriter,8'
@@ -92,10 +92,11 @@ $Label4.location                 = New-Object System.Drawing.Point(17,147)
 $Label4.Font                     = 'Lucida Sans Typewriter,8'
 
 $DataGridView1                   = New-Object system.Windows.Forms.DataGridView
-$DataGridView1.width             = 886
-$DataGridView1.height            = 303
+$DataGridView1.width             = 1100
+$DataGridView1.height            = 500
 $DataGridView1.AllowUserToAddRows = $false
 $DataGridView1.AllowUserToDeleteRows = $false
+$DataGridView1.ReadOnly = $true
 $DataGridView1Data = @(@("alm_out","Alter_Table_B1.sql","In Progress","Log", "2020-03-20 14:00:00 "),@("alm_udm","Create_Table_E1.sql","Succesfull", "Log", "2020-03-20 15:15:30"))
 $DataGridView1.ColumnCount = 5
 $DataGridView1.ColumnHeadersVisible = $true
@@ -106,9 +107,9 @@ $DataGridView1.Columns[1].Width = 250
 $DataGridView1.Columns[2].Name = "Status"
 $DataGridView1.Columns[2].Width = 100
 $DataGridView1.Columns[3].Name = "Log or Message"
-$DataGridView1.Columns[3].Width = 250
+$DataGridView1.Columns[3].Width = 450
 $DataGridView1.Columns[4].Name = "Time"
-$DataGridView1.Columns[4].Width = 143
+$DataGridView1.Columns[4].Width = 120
 foreach ($row in $DataGridView1Data){
           $DataGridView1.Rows.Add($row)
       }
@@ -126,16 +127,16 @@ $L_Message.BackColor         = "LightBlue"
 $TAB_Control 					= New-Object 'System.Windows.Forms.TabControl'
 $TAB_Control.Alignment			= "Top"
 $TAB_Control.SelectedIndex 		= 0
-$TAB_Control.Size				= "928,749"
+$TAB_Control.Size				= "1200,749"
 
 
 $TAB_Page_SQL 					= New-Object 'System.Windows.Forms.TabPage'
 $TAB_Page_SQL.Text 				= "SQL Release TAB"
-$TAB_Page_SQL.Size				= "928,749"
+$TAB_Page_SQL.Size				= "1200,749"
 
 $TAB_Page_TBA 					= New-Object 'System.Windows.Forms.TabPage'
 $TAB_Page_TBA.Text 				= "TBA"
-$TAB_Page_TBA.Size				= "928,749"
+$TAB_Page_TBA.Size				= "1200,749"
 
 $RootLevel.controls.Add($TAB_Control)
 $TAB_Control.controls.AddRange(@($TAB_Page_SQL,$TAB_Page_TBA))
