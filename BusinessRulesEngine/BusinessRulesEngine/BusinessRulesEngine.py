@@ -15,6 +15,11 @@ def categorise_type(x):
     else:
         return 0
 
+def x_eq_y(x,y):
+    try:
+        return x == y
+    except Exception as e:
+        return e
 
 def x_in_y(x,y):
     try:
@@ -101,7 +106,11 @@ data_sample = [1,2.0,
 
 negate_kwords = ['','!']
 reverse_kwords = ['','r_']
-logical_kwords = ['in:', 'gt:', 'lt:', 'ge:', 'le:', 'eq:', 'sw:', 'ew:', 'bw:', 'sub:', 'sup:', 'disjoint:','ir:']
+logical_kwords = ['eq:','in:', 'gt:', 'lt:', 'ge:', 'le:', 'eq:', 'sw:', 'ew:', 'bw:', 'sub:', 'sup:', 'disjoint:','ir:']
+
+negate_kwords_dict = {'':'', '!' : 'not'}
+reverse_kwords_dict = {'' : True, 'r_' : False}
+logical_kwords_dict = {'eq:':x_eq_y,'in:':x_in_y, 'gt:':x_gt_y, 'lt:':x_lt_y, 'ge:':x_ge_y, 'le:':x_le_y, 'sw:' : x_startswith_y, 'ew:' : x_endswith_y, 'bw:' : x_, 'sub:', 'sup:', 'disjoint:','ir:'}
 
 all_kword_combinations = [f'{n}{r}{l}' for n in negate_kwords
      for r in reverse_kwords
