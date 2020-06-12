@@ -3,16 +3,29 @@
 [info]    Press <enter> to interrupt or '?' for more options.
 [debug] POC / Compile / compile - Accepted event for C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
 [debug] Received Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] Received event for path C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
+[debug] Received event for path C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
+[debug] Creating update event for modified C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala (previous stamp: Hash(1630707a798052ba76a78ee5c7fa5593bdef82a5), current stamp: Hash(dd7cd7a156247819a768a0e7a90766da33b486c9))
+[debug] Received file event actions: C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala -> Trigger. Returning: (Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala, 2020-Jun-11 21:36:26.465 BT),Trigger)
+[info] Build triggered by C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala. Running 'compile'.
+[debug] [watch] [debug] Received file event Trigger for Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala, 2020-Jun-11 21:36:26.465 BT).
+[debug] POC / Compile / compile - Accepted event for C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
+[debug] Received Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[info] 2. Monitoring source files for POC/compile...
+[info]    Press <enter> to interrupt or '?' for more options.
+[debug] Discarding entry for recently updated path C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala. This event occurred 32 ms since the last event for this path.
 [debug] POC / Compile / compile - Accepted event for C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
 [debug] Received Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
 [debug] Received event for path C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
 [debug] Received event for path C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
-[debug] Creating update event for modified C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala (previous stamp: Hash(d17860eae2cd1887e5975c71900b5e0f6845803d), current stamp: Hash(4090c8e2d38e72386e1393c4e14d4452ddad6c2b))
-[debug] Received file event actions: C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala -> Trigger. Returning: (Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala, 2020-Jun-11 21:17:46.566 BT),Trigger)
+[debug] Creating update event for modified C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala (previous stamp: Hash(dd7cd7a156247819a768a0e7a90766da33b486c9), current stamp: Hash(28ec6d375aa1398108f3fd055c30e5d5e0593238))
+[debug] POC / Compile / compile - Accepted event for C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala
+[debug] Received file event actions: C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala -> Trigger. Returning: (Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala, 2020-Jun-11 21:36:39.324 BT),Trigger)
+[debug] Received Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
 [info] Build triggered by C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala. Running 'compile'.
-[debug] [watch] [debug] Received file event Trigger for Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala, 2020-Jun-11 21:17:46.566 BT).
-[info] 2. Monitoring source files for POC/compile...
+[debug] [watch] [debug] Received file event Trigger for Update(C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala, 2020-Jun-11 21:36:39.324 BT).
+[info] 3. Monitoring source files for POC/compile...
 [info]    Press <enter> to interrupt or '?' for more options.
-[debug] Discarding entry for recently updated path C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala. This event occurred 31 ms since the last event for this path.
+[debug] Discarding entry for recently updated path C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala. This event occurred 30 ms since the last event for this path.
 [debug] [watch] [debug] Received input event: Run().
 [debug] [watch] [debug] Received input event: Run().

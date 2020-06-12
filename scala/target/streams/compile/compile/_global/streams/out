@@ -1,0 +1,4 @@
+[error] C:\MyWork\python\gitBusinessRulesEngine\scala\src\main\scala\example\POC.scala:32:2: not found: value df
+[error] 	df.coalesce(1)
+[error] 	^
+[error] one error found

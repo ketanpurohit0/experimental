@@ -1,1 +1,7 @@
-[debug] Jar uptodate: C:\MyWork\python\gitBusinessRulesEngine\scala\target\scala-2.12\poc_2.12-0.1.0-SNAPSHOT.jar
+[debug] Packaging C:\MyWork\python\gitBusinessRulesEngine\scala\target\scala-2.12\poc_2.12-0.1.0-SNAPSHOT.jar ...
+[debug] Input file mappings:
+[debug] 	POC$.class
+[debug] 	  C:\MyWork\python\gitBusinessRulesEngine\scala\target\scala-2.12\classes\POC$.class
+[debug] 	POC.class
+[debug] 	  C:\MyWork\python\gitBusinessRulesEngine\scala\target\scala-2.12\classes\POC.class
+[debug] Done packaging.
