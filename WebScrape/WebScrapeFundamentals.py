@@ -34,7 +34,8 @@ def fundamentals(URL):
         map[item[0]] = optionalNumeric(item[1])
     return map
 
-# Fundamentals page
-URL = "https://www.sharesmagazine.co.uk/shares/share/7DIG/fundamentals"
-fundamentalsMap = fundamentals(URL)
-print(fundamentalsMap)
+if __name__ == "__main__":
+    # Fundamentals page
+    URL = "https://www.sharesmagazine.co.uk/shares/share/7DIG/fundamentals"
+    fundamentalsMap = fundamentals(URL)
+    print(fundamentalsMap)
