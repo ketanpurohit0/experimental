@@ -1,12 +1,6 @@
+import WebScrapeCommon as WSC
 import requests
 from  bs4 import BeautifulSoup
-
-def optionalNumeric(s):
-    try:
-        return float(s)
-    except ValueError:
-        return s
-
 
 
 def historicalPrices(URL):
@@ -19,7 +13,7 @@ def historicalPrices(URL):
     mt = soup.find('table', class_='footable-table table-1 gutter-under gutter-top-small')
     tbody = mt.find("tbody")
     for t in tbody.find_all("tr"):
-        rarr.append([optionalNumeric(t.select(f"td:nth-of-type({str(i)})")[0].text) for i in include_cols])       
+        rarr.append([WSC.optionalNumeric(t.select(f"td:nth-of-type({str(i)})")[0].text) for i in include_cols])       
     return rarr
 
 if __name__ == "__main__":

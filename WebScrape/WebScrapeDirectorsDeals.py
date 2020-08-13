@@ -1,12 +1,6 @@
+import WebScrapeCommon
 import requests
 from  bs4 import BeautifulSoup
-
-def optionalNumeric(s):
-    try:
-        return float(s)
-    except ValueError:
-        return s
-
 
 
 def directorsDeals(URL):

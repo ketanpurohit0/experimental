@@ -1,12 +1,6 @@
+import WebScrapeCommon as WSC
 import requests
 from  bs4 import BeautifulSoup
-
-def optionalNumeric(s):
-    try:
-        return float(s)
-    except ValueError:
-        return s
-
 
 
 def fundamentals(URL):
@@ -31,7 +25,7 @@ def fundamentals(URL):
     #print(keys, values)
     zipped_kv =zip(keys, values)
     for item in zipped_kv:
-        map[item[0]] = optionalNumeric(item[1])
+        map[item[0]] = WSC.optionalNumeric(item[1])
     return map
 
 if __name__ == "__main__":

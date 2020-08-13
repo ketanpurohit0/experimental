@@ -1,5 +1,6 @@
 from dateutil import parser
 
+
 def optionalNumeric(s):
     try:
         return float(s)

@@ -2,7 +2,7 @@ import requests
 from  bs4 import BeautifulSoup
 
 
-def risers_fallers(URL):
+def risersAndFallers(URL):
     rarr = []
     page = requests.get(URL)
     soup  = BeautifulSoup(page.content, "html.parser")
@@ -34,5 +34,5 @@ if __name__ == "__main__":
     #URL = "https://www.sharesmagazine.co.uk/market-scan/highs-lows?page=1&highLow=high&period=monthly&filtersubmitbtn=Update"
     # First page of risers and fallers (t-4w)
     #URL = "https://www.sharesmagazine.co.uk/market-scan/risers-fallers?dateComparison=2020-07-15&sortDirection=risers&index=&price=%2C&filtersubmitbtn=Update"
-    listOfRisersFallers = risers_fallers(URL)
+    listOfRisersFallers = risersAndFallers(URL)
     print(listOfRisersFallers)
