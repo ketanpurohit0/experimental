@@ -9,28 +9,21 @@ def optionalNumeric(s):
 
 
 
-def marketNews(URL):
+def historicalPrices(URL):
     rarr = []
-    keys = ['date','news','src']
-    include_cols = "2,3,4"
+    keys = ['date','close']
+    include_cols = [1,5]
     rarr.append(keys)
     page = requests.get(URL)
     soup  = BeautifulSoup(page.content, "html.parser")
-    mt = soup.find('table', class_='table-1')
-    for t in mt.find_all("tr"):
-        values = []
-        elems = t.children
-        i = 0
-        for e in elems:
-            if (e.name == 'td'):
-                i=i+1
-                if ( include_cols.find(str(i)) ):
-                    values.append( e.text.strip(' \n\t'))
-        rarr.append(values)
+    mt = soup.find('table', class_='footable-table table-1 gutter-under gutter-top-small')
+    tbody = mt.find("tbody")
+    for t in tbody.find_all("tr"):
+        rarr.append([optionalNumeric(t.select(f"td:nth-of-type({str(i)})")[0].text) for i in include_cols])       
     return rarr
 
 if __name__ == "__main__":
-    # Market News page
-    URL = "https://www.sharesmagazine.co.uk/shares/share/7DIG/news/market"
-    marketNewsList = marketNews(URL)
-    print(marketNewsList)
+    # Historical Prices
+    URL = "https://www.sharesmagazine.co.uk/shares/share/7DIG/historic-prices"
+    historicalPricesList = historicalPrices(URL)
+    print(historicalPricesList)
