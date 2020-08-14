@@ -33,3 +33,5 @@ if __name__ == "__main__":
     URL = "https://www.sharesmagazine.co.uk/shares/share/7DIG/fundamentals"
     fundamentalsMap = fundamentals(URL)
     print(fundamentalsMap)
+    #zz=str(fundamentalsMap)
+    #pass
