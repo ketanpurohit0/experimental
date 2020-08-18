@@ -1,0 +1,28 @@
+bcpandas
+pandas-datareader
+
+<pyodbc->PostgreSQL>
+conn_str = (\
+    "DRIVER={PostgreSQL ANSI};"\
+    "DATABASE=postgres;"\
+    "UID=postgres;"\
+    "PWD=*secret*;"\
+    "SERVER=localhost;"\
+    "PORT=5432;"\
+    )
+conn = pyodbc.connect(conn_str)
+crsr = conn.execute("SELECT * FROM FOO limit 50")
+row = crsr.fetchone()
+print(row)
+crsr.close()
+conn.close()
+
+<SQLAlchemy->PostgreSQL>
+import sqlalchemy
+conn_str="postgresql+psycopg2://postgres:*secret*@localhost/postgres"
+engine = sqlalchemy.create_engine(conn_str)
+conn=engine.connect()
+result=conn.execute('SELECT * FROM Foo')
+result.keys()
+for i in result:
+	print(i)
