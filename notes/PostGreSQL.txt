@@ -1,7 +1,8 @@
 bcpandas
 pandas-datareader
 
-<pyodbc->PostgreSQL>
+<pyodbc->PostgreSQL: Returns json and arrays as 'strings'>
+import pyodbc
 conn_str = (\
     "DRIVER={PostgreSQL ANSI};"\
     "DATABASE=postgres;"\
@@ -17,12 +18,38 @@ print(row)
 crsr.close()
 conn.close()
 
-<SQLAlchemy->PostgreSQL>
+<SQLAlchemy->PostgreSQL : Works correctly with json (->map) and arrays (->list) >
 import sqlalchemy
 conn_str="postgresql+psycopg2://postgres:*secret*@localhost/postgres"
 engine = sqlalchemy.create_engine(conn_str)
 conn=engine.connect()
 result=conn.execute('SELECT * FROM Foo')
 result.keys()
-for i in result:
-	print(i)
+for r in result:
+    print(r)
+    for i in r:
+        print(type(i))
+		
+<SQLAlchemy->PostgreSQL : Works correctly with json and arrays>
+import sqlalchemy
+conn_str="postgresql://postgres:secret@localhost/postgres"
+engine = sqlalchemy.create_engine(conn_str)
+conn=engine.connect()
+result=conn.execute('SELECT * FROM Foo')
+result.keys()
+for r in result:
+    print(r)
+    for i in r:
+        print(type(i))
+
+<SQLAlchemy->PostgreSQL : Works correctly with json and arrays>		
+import sqlalchemy
+conn_str="postgresql+pg8000//postgres:secret@localhost/postgres"
+engine = sqlalchemy.create_engine(conn_str)
+conn=engine.connect()
+result=conn.execute('SELECT * FROM Foo')
+result.keys()
+for r in result:
+    print(r)
+    for i in r:
+        print(type(i))

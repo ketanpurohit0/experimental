@@ -35,11 +35,14 @@ PostgreSql
 	SELECT metadata, metadata[1], metadata[1:2], metadata[2:3] , metadata[array_upper(metadata, 1)] FROM foo
 	-- json
  	SELECT js->'inner'-> 'more' asJson, js->'inner'->>'more' asTxt FROM foo
-
+	-- version
+	SELECT version()
 
 
 	
 	2. Test via pyodbc and SqlAlchemy
+	
+	See PostgreSql.txt (SqlAlchemy returns json as dict, array as list. pyodbc does not)
 	
 	3. JDBC driver for PostgreSql
 	
