@@ -57,6 +57,7 @@ Apache Spark
 	1. Set-Up cluster
 	2. Try sql against PostgreSql
 	conn = "jdbc:postgresql://localhost/postgres?user=postgres&password=*secret*"
+	cd C:\MyInstalled\spark-2.4.5-bin-hadoop2.7\spark-2.4.5-bin-hadoop2.7\bin
 	pyspark --jars C:\MyWork\python\gitBusinessRulesEngine\notes\postgresql-42.2.14.jar
 	driver = "org.postgresql.Driver"
 	
@@ -100,6 +101,7 @@ df.select(col("metadata"),size(col("metadata"))).show()
 from pyspark.sql.functions import element_at
 df.select(col("metadata"),element_at(col("metadata"),3)).show() # returns NULL if no element_at index
 # concat
+from pyspark.sql.functions import concat
 df.select(col("metadata"), col("moremetadata"),concat(col("metadata"),col("moremetadata"))).show()
 l = [col("metadata"), col("moremetadata")]
 df.select(col("metadata"), col("moremetadata"),concat(*l)).show()
@@ -109,8 +111,6 @@ json_schema = spark.read.json(df.rdd.map(lambda row: row.js)).schema
 df.withColumn('js', from_json(col('js'), json_schema)).show()
 
 sparkSession.stop()
-
-pyspark --jars C:\MyWork\python\gitBusinessRulesEngine\notes\postgresql-42.2.14.jar
 
 	
 	
