@@ -3,10 +3,54 @@ Date:2020-08-19
 PostgreSql
 	1. Test with different col types
 	
+	-- drop table
+	DROP TABLE IF EXISTS foo
+	
+	-- create table
+	CREATE TABLE foo
+	(
+		name varchar(10) NOT NULL,
+		age  int,
+		dob  date,
+		value decimal,
+		seq serial,
+		ts timestamp,
+		js json,
+		jsb jsonb,
+		metadata varchar(5)[],
+		moremetadata varchar(5)[3]	
+	)
+	-- get character encoding
+	SHOW SERVER_ENCODING
+	
+	-- getting timestamps
+	select current_timestamp,localtimestamp
+
+	-- add some data
+	INSERT INTO foo (name, age, dob, value, ts, js, jsb, metadata, moremetadata)
+	VALUES
+	('Name',32, '2020-03-20', 13.00, localtimestamp, '{ "foo" : "bar", "inner": {"more" : "foo"}}',NULL, '{"a","b","c"}', '{"aa","bb"}')
+	
+	-- arrays all, first, first two, second and third, last
+	SELECT metadata, metadata[1], metadata[1:2], metadata[2:3] , metadata[array_upper(metadata, 1)] FROM foo
+	-- json
+ 	SELECT js->'inner'-> 'more' asJson, js->'inner'->>'more' asTxt FROM foo
+
+
+
+	
 	2. Test via pyodbc and SqlAlchemy
+	
+	3. JDBC driver for PostgreSql
 	
 WebScrape
 
 	1. Rename git repo
+	
+
+Apache Spark
+
+	1. Set-Up cluster
+	2. Try sql against PostgreSql
 	
 	
