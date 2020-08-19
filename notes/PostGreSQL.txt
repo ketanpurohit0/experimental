@@ -32,7 +32,7 @@ for r in result:
 		
 <SQLAlchemy->PostgreSQL : Works correctly with json and arrays>
 import sqlalchemy
-conn_str="postgresql://postgres:secret@localhost/postgres"
+conn_str="postgresql://postgres:*secret*@localhost/postgres"
 engine = sqlalchemy.create_engine(conn_str)
 conn=engine.connect()
 result=conn.execute('SELECT * FROM Foo')
@@ -44,7 +44,7 @@ for r in result:
 
 <SQLAlchemy->PostgreSQL : Works correctly with json and arrays>		
 import sqlalchemy
-conn_str="postgresql+pg8000//postgres:secret@localhost/postgres"
+conn_str="postgresql+pg8000//postgres:*secret*@localhost/postgres"
 engine = sqlalchemy.create_engine(conn_str)
 conn=engine.connect()
 result=conn.execute('SELECT * FROM Foo')

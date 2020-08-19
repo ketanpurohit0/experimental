@@ -45,6 +45,7 @@ PostgreSql
 	See PostgreSql.txt (SqlAlchemy returns json as dict, array as list. pyodbc does not)
 	
 	3. JDBC driver for PostgreSql
+	Downloaded postgresql-42.2.14.jar
 	
 WebScrape
 
@@ -55,5 +56,61 @@ Apache Spark
 
 	1. Set-Up cluster
 	2. Try sql against PostgreSql
+	conn = "jdbc:postgresql://localhost/postgres?user=postgres&password=*secret*"
+	pyspark --jars C:\MyWork\python\gitBusinessRulesEngine\notes\postgresql-42.2.14.jar
+	driver = "org.postgresql.Driver"
+	
+from pyspark.sql import SparkSession
+
+def getSpark():
+    ss = SparkSession.builder.appName("Test").getOrCreate()
+    return ss
+
+def getUrl(db, user, pwd):
+    url = f"jdbc:postgresql://localhost/{db}?user={user}&password={pwd}"
+    return url
+
+def getReader(sparkSession,url):
+    reader = sparkSession.read.format("jdbc").option("driver","org.postgresql.Driver").option("url", url)
+    return reader
+
+def getQueryDataFrame(sparkSession, url, query):
+    reader = getReader(sparkSession, url).option("dbtable", f"({query}) T")
+    return reader.load()
+
+
+sparkSession = getSpark()
+sparkSession.sparkContext.setLogLevel("ERROR")
+# QUERY
+query = 'SELECT * FROM Foo'
+# URL
+url = getUrl('postgres','postgres','*secret*')
+# DF
+df = getQueryDataFrame(sparkSession, url, query)
+df.show()
+# Arrays (https://mungingdata.com/apache-spark/arraytype-columns/)
+from pyspark.sql.functions import col
+from pyspark.sql.functions import explode
+df.select(col("name"), explode(col("moremetadata"))).show()
+df.select(col("name"), explode(col("metadata"))).show()
+# Len of array
+from pyspark.sql.functions import size
+df.select(col("metadata"),size(col("metadata"))).show()
+# element_at
+from pyspark.sql.functions import element_at
+df.select(col("metadata"),element_at(col("metadata"),3)).show() # returns NULL if no element_at index
+# concat
+df.select(col("metadata"), col("moremetadata"),concat(col("metadata"),col("moremetadata"))).show()
+l = [col("metadata"), col("moremetadata")]
+df.select(col("metadata"), col("moremetadata"),concat(*l)).show()
+# JSON (https://stackoverflow.com/questions/41107835/pyspark-parse-a-column-of-json-strings)
+from pyspark.sql.functions import lit,schema_of_json,from_json
+json_schema = spark.read.json(df.rdd.map(lambda row: row.js)).schema
+df.withColumn('js', from_json(col('js'), json_schema)).show()
+
+sparkSession.stop()
+
+pyspark --jars C:\MyWork\python\gitBusinessRulesEngine\notes\postgresql-42.2.14.jar
+
 	
 	
