@@ -29,7 +29,7 @@ PostgreSql
 	-- add some data
 	INSERT INTO foo (name, age, dob, value, ts, js, jsb, metadata, moremetadata)
 	VALUES
-	('Name',32, '2020-03-20', 13.00, localtimestamp, '{ "foo" : "bar", "inner": {"more" : "foo"}}',NULL, '{"a","b","c"}', '{"aa","bb"}')
+	('Name',32, '2020-03-20', 13.00, localtimestamp, '{ "foo" : "bar", "inner": {"more" : "foo"}}','{ "foo" : "bar", "inner": {"more" : "foo"}}', '{"a","b","c"}', '{"aa","bb"}')
 	
 	-- arrays all, first, first two, second and third, last
 	SELECT metadata, metadata[1], metadata[1:2], metadata[2:3] , metadata[array_upper(metadata, 1)] FROM foo
