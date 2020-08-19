@@ -1,0 +1,12 @@
+Date:2020-08-19
+
+PostgreSql
+	1. Test with different col types
+	
+	2. Test via pyodbc and SqlAlchemy
+	
+WebScrape
+
+	1. Rename git repo
+	
+	
