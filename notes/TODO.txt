@@ -129,7 +129,9 @@ CREATE TABLE tslp
 	n4 decimal,
 	n5 numeric,
 	b boolean,
-	tx text
+	tx text,
+	sr serial,
+	bsr bigserial
 );
 CREATE TABLE tetl
 (
@@ -144,7 +146,9 @@ CREATE TABLE tetl
 	n4 decimal DEFAULT 8,
 	n5 numeric DEFAULT 16,
 	b boolean DEFAULT False,
-	tx text DEFAULT 'Text'
+	tx text DEFAULT 'Text',
+	sr serial,
+	bsr bigserial 
 );
 
 INSERT INTO tslp (c_dt, c_ts, c_num, c_f)  VALUES ('2020-03-31', '2020-03-31 00:00:00', 1, 1.0);
