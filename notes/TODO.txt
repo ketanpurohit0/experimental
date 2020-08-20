@@ -127,7 +127,9 @@ CREATE TABLE tslp
 	n2 integer,
 	n3 bigint,
 	n4 decimal,
-	n5 numeric
+	n5 numeric,
+	b boolean,
+	tx text
 );
 CREATE TABLE tetl
 (
@@ -140,7 +142,9 @@ CREATE TABLE tetl
 	n2 integer DEFAULT 2, 
 	n3 bigint DEFAULT 4,
 	n4 decimal DEFAULT 8,
-	n5 numeric DEFAULT 16
+	n5 numeric DEFAULT 16,
+	b boolean DEFAULT False,
+	tx text DEFAULT 'Text'
 );
 
 INSERT INTO tslp (c_dt, c_ts, c_num, c_f)  VALUES ('2020-03-31', '2020-03-31 00:00:00', 1, 1.0);
@@ -202,6 +206,8 @@ df2 = getQueryDataFrame(sparkSession, url, q2)
 nullDefaultMap={'c_str':'-', 'c_num' : 0, 'c_f' : 0.0}
 nullDefaultMap={'c_str':'-', 'c_dt':'1900-01-01', 'c_ts' : '1900-01-01 00:00:00','c_num' : 0, 'c_f' : '0.0'}
 nullDefaultMap={'c_str':'-', 'c_dt':'1900-01-01', 'c_ts' : '1900-01-01 00:00:00','c_num' : 0, 'c_f' : '0.0', 'n1':'1', 'n2':'2', 'n3':'4','n4':'8', 'n5':'16'}
+nullDefaultMap={'c_str':'-', 'c_dt':'1900-01-01', 'c_ts' : '1900-01-01 00:00:00','c_num' : 0, 'c_f' : '0.0', 'n1':'1', 'n2':'2', 'n3':'4','n4':'8', 'n5':'16', 'b':'False', 'tx':'Text'}
+
 """
 >>> nullDefaultMap
 {'c_str': '-', 'c_dt': '1900-01-01', 'c_ts': '1900-01-01 00:00:00', 'c_num': 0, 'c_f': '0.0', 'n1': '1', 'n2': '2', 'n3': '4', 'n4': '8', 'n5': '16'}
