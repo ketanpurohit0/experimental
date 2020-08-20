@@ -63,6 +63,8 @@ Apache Spark
 	
 from pyspark.sql import SparkSession
 
+standardNullReplacementMapPerStandardType = {'string':'-', 'date':'1900-01-01', 'timestamp':'1900-01-01 00:00:00', 'double':'0.0', 'int':'0', 'boolean':'False'}
+
 def getSpark():
     ss = SparkSession.builder.appName("Test").getOrCreate()
     return ss
@@ -78,6 +80,20 @@ def getReader(sparkSession,url):
 def getQueryDataFrame(sparkSession, url, query):
     reader = getReader(sparkSession, url).option("dbtable", f"({query}) T")
     return reader.load()
+	
+def getStandardizedType(dfType):
+    if (dfType == 'string' or dfType == 'date' or dfType == 'timestamp' or dfType == 'double' or dfType == 'int' or dfType == 'boolean'):
+        return dfType
+    elif ('decimal' in dfType):
+        return 'double'
+    else:
+        return 'int'
+	
+def replaceNulls(df):
+    nullReplacementMap = {cn:standardNullReplacementMapPerStandardType.get(getStandardizedType(ct)) for (cn, ct) in df.dtypes}
+    return df.na.fill(nullReplacementMap)
+	
+	
 
 # -- Basic tests
 sparkSession = getSpark()
@@ -85,7 +101,7 @@ sparkSession.sparkContext.setLogLevel("ERROR")
 # QUERY
 query = 'SELECT * FROM Foo'
 # URL
-url = getUrl('postgres','postgres','*secret*')
+url = getUrl('postgres','postgres','foobar_secret')
 # DF
 df = getQueryDataFrame(sparkSession, url, query)
 df.show()
@@ -235,5 +251,7 @@ t.show()
 |  val|2020-03-31|2020-03-31 00:00:00|    1|0.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
 +-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
 """
+
+
 	
 	
