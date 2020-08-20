@@ -79,7 +79,7 @@ def getQueryDataFrame(sparkSession, url, query):
     reader = getReader(sparkSession, url).option("dbtable", f"({query}) T")
     return reader.load()
 
-
+# -- Basic tests
 sparkSession = getSpark()
 sparkSession.sparkContext.setLogLevel("ERROR")
 # QUERY
@@ -112,5 +112,54 @@ df.withColumn('js', from_json(col('js'), json_schema)).show()
 
 sparkSession.stop()
 
+# - Investigate NULL vs '-' and NULL vs 1900-01-01 comparison
+# SQL Code
+DROP TABLE IF EXISTS tslp;
+DROP TABLE IF EXISTS tetl;
+CREATE TABLE tslp
+(
+	c_str VARCHAR(5),
+	c_dt  date,
+	c_ts  timestamp,
+	c_num int,
+	c_f float
+);
+CREATE TABLE tetl
+(
+	c_str VARCHAR(5) DEFAULT '-',
+	c_dt  date DEFAULT('1900-01-01'),
+	c_ts  timestamp DEFAULT ('1900-01-01 00:00:00'),
+	c_num int DEFAULT 0,
+	c_f float DEFAULT 0.0
+);
+
+INSERT INTO tslp (c_dt, c_ts, c_num, c_f)  VALUES ('2020-03-31', '2020-03-31 00:00:00', 1, 1.0);
+INSERT INTO tslp (c_str, c_ts, c_num,c_f) VALUES ('val', '2020-03-31 00:00:00', 1, 1.0);
+INSERT INTO tslp (c_str, c_dt, c_num,c_f) VALUES ('val', '2020-03-31', 1, 1.0);
+INSERT INTO tslp (c_str, c_dt, c_ts, c_f ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1.0);
+INSERT INTO tslp (c_str, c_dt, c_ts, c_num ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1);
+
+INSERT INTO tetl (c_dt, c_ts, c_num, c_f)  VALUES ('2020-03-31', '2020-03-31 00:00:00', 1, 1.0);
+INSERT INTO tetl (c_str, c_ts, c_num,c_f) VALUES ('val', '2020-03-31 00:00:00', 1, 1.0);
+INSERT INTO tetl (c_str, c_dt, c_num,c_f) VALUES ('val', '2020-03-31', 1, 1.0);
+INSERT INTO tetl (c_str, c_dt, c_ts, c_f ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1.0);
+INSERT INTO tetl (c_str, c_dt, c_ts, c_num ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1);
+
+SELECT * FROM tslp;
+SELECT * FROM tetl;
+# - Spark code
+sparkSession = getSpark()
+sparkSession.sparkContext.setLogLevel("ERROR")
+# URL
+url = getUrl('postgres','postgres','foobar_secret')
+
+q1 = "SELECT * FROM tslp"
+q2 = "SELECT * FROM tetl"
+df1 = getQueryDataFrame(sparkSession, url, q1)
+df2 = getQueryDataFrame(sparkSession, url, q2)
+
+#defaults map
+nullDefaultMap={'c_str':'-', 'c_num' : 0, 'c_f' : 0.0}
+df1.na.fill(nullDefaultMap).show()
 	
 	
