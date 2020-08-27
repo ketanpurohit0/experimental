@@ -252,6 +252,12 @@ t.show()
 +-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
 """
 
+<Investigate, regex>
+
+INSERT INTO foo (name) VALUES ('ABC_1234')
+INSERT INTO foo (name) VALUES ('ABC_1234_DEF')
+from pyspark.sql.functions import regexp_replace
+df.withColumn('name', regexp_replace( col('name'), '(_[0-9]*_|_[0-9]*$)','@CX@'))
 
 	
 	
