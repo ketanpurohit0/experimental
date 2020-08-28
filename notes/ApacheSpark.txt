@@ -20,3 +20,10 @@
 	
 <Spark Basic Tests>
 	see SparkTestDrive.py
+
+<Spark Null defaulting>
+	see SparkDefaultForNull.py
+	
+<Spark Differential join>
+	see SparkDifferentialJoin.py
+	
