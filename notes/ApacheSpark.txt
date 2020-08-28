@@ -1,0 +1,22 @@
+<Spark>
+	jdbc driver = postgresql-42.2.14.jar
+	driver = "org.postgresql.Driver"
+
+<Db conn str for spark>
+
+	conn = "jdbc:postgresql://localhost/postgres?user=postgres&password=*secret*"
+	
+<Spark location>
+
+	cd C:\MyInstalled\spark-2.4.5-bin-hadoop2.7\spark-2.4.5-bin-hadoop2.7\bin
+	pyspark --jars C:\MyWork\python\gitBusinessRulesEngine\notes\postgresql-42.2.14.jar
+	
+	or
+	C:\MyInstalled\spark-2.4.5-bin-hadoop2.7\spark-2.4.5-bin-hadoop2.7\bin\pyspark --jars C:\MyWork\python\gitBusinessRulesEngine\notes\postgresql-42.2.14.jar
+
+	
+<Spark Utils>
+	see SparkHelper.py
+	
+<Spark Basic Tests>
+	see SparkTestDrive.py

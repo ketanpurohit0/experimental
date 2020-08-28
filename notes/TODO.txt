@@ -3,314 +3,46 @@ Date:2020-08-19
 PostgreSql
 	1. Test with different col types
 	
-	-- drop table
-	DROP TABLE IF EXISTS foo
-	
-	-- create table
-	CREATE TABLE foo
-	(
-		name varchar(10) NOT NULL,
-		age  int,
-		dob  date,
-		value decimal,
-		seq serial,
-		ts timestamp,
-		js json,
-		jsb jsonb,
-		metadata varchar(5)[],
-		moremetadata varchar(5)[3]	
-	)
-	-- get character encoding
-	SHOW SERVER_ENCODING
-	
-	-- getting timestamps
-	select current_timestamp,localtimestamp
-
-	-- add some data
-	INSERT INTO foo (name, age, dob, value, ts, js, jsb, metadata, moremetadata)
-	VALUES
-	('Name',32, '2020-03-20', 13.00, localtimestamp, '{ "foo" : "bar", "inner": {"more" : "foo"}}','{ "foo" : "bar", "inner": {"more" : "foo"}}', '{"a","b","c"}', '{"aa","bb"}')
-	
-	-- arrays all, first, first two, second and third, last
-	SELECT metadata, metadata[1], metadata[1:2], metadata[2:3] , metadata[array_upper(metadata, 1)] FROM foo
-	-- json
- 	SELECT js->'inner'-> 'more' asJson, js->'inner'->>'more' asTxt FROM foo
-	-- version
-	SELECT version()
-
+	DONE - see PostgreSql.txt
 
 	
 	2. Test via pyodbc and SqlAlchemy
 	
-	See PostgreSql.txt (SqlAlchemy returns json as dict, array as list. pyodbc does not)
+	DONE - See PostgreSql.txt (SqlAlchemy returns json as dict, array as list. pyodbc does not)
 	
 	3. JDBC driver for PostgreSql
-	Downloaded postgresql-42.2.14.jar
+	
+	DONE - Downloaded postgresql-42.2.14.jar
 	
 WebScrape
 
 	1. Rename git repo
 	
+	TODO
+	
 
 Apache Spark
 
 	1. Set-Up cluster
+	
+	TODO -
+	
 	2. Try sql against PostgreSql
-	conn = "jdbc:postgresql://localhost/postgres?user=postgres&password=*secret*"
-	cd C:\MyInstalled\spark-2.4.5-bin-hadoop2.7\spark-2.4.5-bin-hadoop2.7\bin
-	pyspark --jars C:\MyWork\python\gitBusinessRulesEngine\notes\postgresql-42.2.14.jar
-	driver = "org.postgresql.Driver"
 	
-from pyspark.sql import SparkSession
-
-standardNullReplacementMapPerStandardType = {'string':'-', 'date':'1900-01-01', 'timestamp':'1900-01-01 00:00:00', 'double':'0.0', 'int':'0', 'boolean':'False'}
-
-def getSpark():
-    ss = SparkSession.builder.appName("Test").getOrCreate()
-    return ss
-
-def getUrl(db, user, pwd):
-    url = f"jdbc:postgresql://localhost/{db}?user={user}&password={pwd}"
-    return url
-
-def getReader(sparkSession,url):
-    reader = sparkSession.read.format("jdbc").option("driver","org.postgresql.Driver").option("url", url)
-    return reader
-
-def getQueryDataFrame(sparkSession, url, query):
-    reader = getReader(sparkSession, url).option("dbtable", f"({query}) T")
-    return reader.load()
-	
-def getStandardizedType(dfType):
-    if (dfType == 'string' or dfType == 'date' or dfType == 'timestamp' or dfType == 'double' or dfType == 'int' or dfType == 'boolean'):
-        return dfType
-    elif ('decimal' in dfType):
-        return 'double'
-    else:
-        return 'int'
-	
-def replaceNulls(df):
-    nullReplacementMap = {cn:standardNullReplacementMapPerStandardType.get(getStandardizedType(ct)) for (cn, ct) in df.dtypes}
-    return df.na.fill(nullReplacementMap)
+	DONE - See ApacheSpark.txt
 	
 	
-
-# -- Basic tests
-sparkSession = getSpark()
-sparkSession.sparkContext.setLogLevel("ERROR")
-# QUERY
-query = 'SELECT * FROM Foo'
-# URL
-url = getUrl('postgres','postgres','foobar_secret')
-# DF
-df = getQueryDataFrame(sparkSession, url, query)
-df.show()
-# Arrays (https://mungingdata.com/apache-spark/arraytype-columns/)
-from pyspark.sql.functions import col
-from pyspark.sql.functions import explode
-df.select(col("name"), explode(col("moremetadata"))).show()
-df.select(col("name"), explode(col("metadata"))).show()
-# Len of array
-from pyspark.sql.functions import size
-df.select(col("metadata"),size(col("metadata"))).show()
-# element_at
-from pyspark.sql.functions import element_at
-df.select(col("metadata"),element_at(col("metadata"),3)).show() # returns NULL if no element_at index
-# concat
-from pyspark.sql.functions import concat
-df.select(col("metadata"), col("moremetadata"),concat(col("metadata"),col("moremetadata"))).show()
-l = [col("metadata"), col("moremetadata")]
-df.select(col("metadata"), col("moremetadata"),concat(*l)).show()
-# JSON (https://stackoverflow.com/questions/41107835/pyspark-parse-a-column-of-json-strings)
-from pyspark.sql.functions import lit,schema_of_json,from_json
-json_schema = spark.read.json(df.rdd.map(lambda row: row.js)).schema
-df.withColumn('js', from_json(col('js'), json_schema)).show()
-
-sparkSession.stop()
-
-# - Investigate NULL vs '-' and NULL vs 1900-01-01 comparison
-# SQL Code
-DROP TABLE IF EXISTS tslp;
-DROP TABLE IF EXISTS tetl;
-CREATE TABLE tslp
-(
-	c_str VARCHAR(5),
-	c_dt  date,
-	c_ts  timestamp,
-	c_num int,
-	c_f float,
-	n1 smallint,
-	n2 integer,
-	n3 bigint,
-	n4 decimal,
-	n5 numeric,
-	b boolean,
-	tx text,
-	sr serial,
-	bsr bigserial
-);
-CREATE TABLE tetl
-(
-	c_str VARCHAR(5) DEFAULT '-',
-	c_dt  date DEFAULT('1900-01-01'),
-	c_ts  timestamp DEFAULT ('1900-01-01 00:00:00'),
-	c_num int DEFAULT 0,
-	c_f float DEFAULT 0.0,
-	n1 smallint DEFAULT 1,
-	n2 integer DEFAULT 2, 
-	n3 bigint DEFAULT 4,
-	n4 decimal DEFAULT 8,
-	n5 numeric DEFAULT 16,
-	b boolean DEFAULT False,
-	tx text DEFAULT 'Text',
-	sr serial,
-	bsr bigserial 
-);
-
-INSERT INTO tslp (c_dt, c_ts, c_num, c_f)  VALUES ('2020-03-31', '2020-03-31 00:00:00', 1, 1.0);
-INSERT INTO tslp (c_str, c_ts, c_num,c_f) VALUES ('val', '2020-03-31 00:00:00', 1, 1.0);
-INSERT INTO tslp (c_str, c_dt, c_num,c_f) VALUES ('val', '2020-03-31', 1, 1.0);
-INSERT INTO tslp (c_str, c_dt, c_ts, c_f ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1.0);
-INSERT INTO tslp (c_str, c_dt, c_ts, c_num ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1);
-
-INSERT INTO tetl (c_dt, c_ts, c_num, c_f)  VALUES ('2020-03-31', '2020-03-31 00:00:00', 1, 1.0);
-INSERT INTO tetl (c_str, c_ts, c_num,c_f) VALUES ('val', '2020-03-31 00:00:00', 1, 1.0);
-INSERT INTO tetl (c_str, c_dt, c_num,c_f) VALUES ('val', '2020-03-31', 1, 1.0);
-INSERT INTO tetl (c_str, c_dt, c_ts, c_f ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1.0);
-INSERT INTO tetl (c_str, c_dt, c_ts, c_num ) VALUES ('val', '2020-03-31', '2020-03-31 00:00:00', 1);
-
-SELECT * FROM tslp;
-SELECT * FROM tetl;
-# - Spark code
-sparkSession = getSpark()
-sparkSession.sparkContext.setLogLevel("ERROR")
-# URL
-url = getUrl('postgres','postgres','foobar_secret')
-
-q1 = "SELECT * FROM tslp"
-q2 = "SELECT * FROM tetl"
-df1 = getQueryDataFrame(sparkSession, url, q1)
-df2 = getQueryDataFrame(sparkSession, url, q2)
-
-"""
->>> df1.show()
-+-----+----------+-------------------+-----+----+----+----+----+----+----+
-|c_str|      c_dt|               c_ts|c_num| c_f|  n1|  n2|  n3|  n4|  n5|
-+-----+----------+-------------------+-----+----+----+----+----+----+----+
-| null|2020-03-31|2020-03-31 00:00:00|    1| 1.0|null|null|null|null|null|
-|  val|      null|2020-03-31 00:00:00|    1| 1.0|null|null|null|null|null|
-|  val|2020-03-31|               null|    1| 1.0|null|null|null|null|null|
-|  val|2020-03-31|2020-03-31 00:00:00| null| 1.0|null|null|null|null|null|
-|  val|2020-03-31|2020-03-31 00:00:00|    1|null|null|null|null|null|null|
-+-----+----------+-------------------+-----+----+----+----+----+----+----+
-
->>> df2.show()
-+-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
-|c_str|      c_dt|               c_ts|c_num|c_f| n1| n2| n3|                  n4|                  n5|
-+-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
-|    -|2020-03-31|2020-03-31 00:00:00|    1|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|1900-01-01|2020-03-31 00:00:00|    1|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|2020-03-31|1900-01-01 00:00:00|    1|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|2020-03-31|2020-03-31 00:00:00|    0|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|2020-03-31|2020-03-31 00:00:00|    1|0.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-+-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
-
->>> df1.dtypes
-[('c_str', 'string'), ('c_dt', 'date'), ('c_ts', 'timestamp'), ('c_num', 'int'), ('c_f', 'double'), ('n1', 'smallint'), ('n2', 'int'), ('n3', 'bigint'), ('n4', 'decimal(38,18)'), ('n5', 'decimal(38,18)')]
->>> df2.dtypes
-[('c_str', 'string'), ('c_dt', 'date'), ('c_ts', 'timestamp'), ('c_num', 'int'), ('c_f', 'double'), ('n1', 'smallint'), ('n2', 'int'), ('n3', 'bigint'), ('n4', 'decimal(38,18)'), ('n5', 'decimal(38,18)')]
-"""
-
-
-#defaults map
-nullDefaultMap={'c_str':'-', 'c_num' : 0, 'c_f' : 0.0}
-nullDefaultMap={'c_str':'-', 'c_dt':'1900-01-01', 'c_ts' : '1900-01-01 00:00:00','c_num' : 0, 'c_f' : '0.0'}
-nullDefaultMap={'c_str':'-', 'c_dt':'1900-01-01', 'c_ts' : '1900-01-01 00:00:00','c_num' : 0, 'c_f' : '0.0', 'n1':'1', 'n2':'2', 'n3':'4','n4':'8', 'n5':'16'}
-nullDefaultMap={'c_str':'-', 'c_dt':'1900-01-01', 'c_ts' : '1900-01-01 00:00:00','c_num' : 0, 'c_f' : '0.0', 'n1':'1', 'n2':'2', 'n3':'4','n4':'8', 'n5':'16', 'b':'False', 'tx':'Text'}
-
-"""
->>> nullDefaultMap
-{'c_str': '-', 'c_dt': '1900-01-01', 'c_ts': '1900-01-01 00:00:00', 'c_num': 0, 'c_f': '0.0', 'n1': '1', 'n2': '2', 'n3': '4', 'n4': '8', 'n5': '16'}
->>>
-"""
-# prove
-t=df1.na.fill(nullDefaultMap)
-t.dtypes
-t.show()
-"""
->>> t.dtypes
-[('c_str', 'string'), ('c_dt', 'date'), ('c_ts', 'timestamp'), ('c_num', 'int'), ('c_f', 'double'), ('n1', 'smallint'), ('n2', 'int'), ('n3', 'bigint'), ('n4', 'decimal(38,18)'), ('n5', 'decimal(38,18)')]
->>> t.show()
-+-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
-|c_str|      c_dt|               c_ts|c_num|c_f| n1| n2| n3|                  n4|                  n5|
-+-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
-|    -|2020-03-31|2020-03-31 00:00:00|    1|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|1900-01-01|2020-03-31 00:00:00|    1|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|2020-03-31|1900-01-01 00:00:00|    1|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|2020-03-31|2020-03-31 00:00:00|    0|1.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-|  val|2020-03-31|2020-03-31 00:00:00|    1|0.0|  1|  2|  4|8.000000000000000000|16.00000000000000...|
-+-----+----------+-------------------+-----+---+---+---+---+--------------------+--------------------+
-"""
-
-<Investigate differential joins>
-DROP TABLE IF EXISTS foo_left;
-CREATE TABLE foo_left
-(
-	name_left varchar(10),
-	uid_left varchar(5)
-);
-DROP TABLE IF EXISTS foo_right;
-CREATE TABLE foo_right
-(
-	name_right varchar(10),
-	uid_right varchar(5)
-);
-<Investigate, regex>
-TRUNCATE TABLE foo_left;
-TRUNCATE TABLE foo_right;
-INSERT INTO foo_left  VALUES ('ABC_1234','abcde');
-INSERT INTO foo_right VALUES ('ABC_35', 'abcde')
-INSERT INTO foo_left  VALUES ('DEF','def');
-INSERT INTO foo_right VALUES ('DEF', 'def')
-
-
-sparkSession = getSpark()
-sparkSession.sparkContext.setLogLevel("ERROR")
-# URL
-url = getUrl('postgres','postgres','foobar_secret')
-
-q1 = "SELECT * FROM foo_left"
-q2 = "SELECT * FROM foo_right"
-df1 = getQueryDataFrame(sparkSession, url, q1)
-df2 = getQueryDataFrame(sparkSession, url, q2)
-
-# Do an outer join
-dfj = df1.join(df2, df1.name_left == df2.name_right, 'full_outer')
-dfj.show()
-# Now we have outer join where rows havent matched, but some have
-# so extract the misses.
-left_cols_only = [x for x in dfj.columns if 'left' in x]
-df1miss = dfj.select(left_cols_only).filter("name_right is null")
-right_cols_only = [x for x in dfj.columns if 'right' in x]
-df2miss = dfj.select(right_cols_only).filter("name_left is null")
-df1miss.show()
-df2miss.show()
-# We remove the misses from original frame (we only keep the good records
-dfj = dfj.filter('name_left is not null and name_right is not null')
-dfj.show()
-# Now  'normalise' name on both sides of the misses
-from pyspark.sql.functions import regexp_replace, col
-df1miss = df1miss.withColumn('name_left', regexp_replace( col('name_left'), '(_[0-9]*_|_[0-9]*$)','@CX@'))
-df2miss = df2miss.withColumn('name_right', regexp_replace( col('name_right'), '(_[0-9]*_|_[0-9]*$)','@CX@'))
-df1miss.show()
-df2miss.show()
-# Attempt join again on the misses subset, this time with additional columns
-# as the keys
-dfj2 = df1miss.join(df2miss, [df1miss.name_left == df2miss.name_right, df1miss.uid_left == df2miss.uid_right], 'full_outer')
-dfj2.show()
-# Take a union
-dfj3 = dfj.union(dfj2)
-dfj3.show()
-
-
+	3.Basic Spark tests
 	
+	DONE - See SparkTestDrive.py
+	
+	4. Investigate NULL replacement (default for null per type)
+	
+	DONE - See SparkDefaultForNullPerType.sql and SparkDefaultForNullPerType.py
+
+	5. Investigate 'differential' joins (rescue outer join orphans!) (Work related problem)
+	
+	DONE - See SparkDifferentialJoin.sql and SparkDifferentialJoin.py
+
+
+
