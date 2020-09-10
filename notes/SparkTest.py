@@ -6,7 +6,7 @@ import SparkHelper as sh
 # C:\MyInstalled\spark-2.4.5-bin-hadoop2.7\spark-2.4.5-bin-hadoop2.7\bin\pyspark --jars C:\MyWork\experimental\notes\postgresql-42.2.14.jar
 # import SparkTest
 # -- spark-submit
-# spark-submit --jars C:\MyWork\experimental\notes\postgresql-42.2.14.jar SparkTest
+# C:\MyInstalled\spark-2.4.5-bin-hadoop2.7\spark-2.4.5-bin-hadoop2.7\bin\spark-submit --jars C:\MyWork\experimental\notes\postgresql-42.2.14.jar SparkTest.py
 
 sparkSession = sh.getSpark()
 sparkSession.sparkContext.setLogLevel("ERROR")
