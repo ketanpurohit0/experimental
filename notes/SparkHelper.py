@@ -59,13 +59,13 @@ def replaceNulls(df):
 
 
 def replaceBlanks(df):
-    from pyspark.sql.functions import col, when, lit, regex_replace
+    from pyspark.sql.functions import col, when, lit, regexp_replace
 
     brv = standardNullReplacementMapPerStandardType.get("string", "")
     stringCols = [cn for (cn, ct) in df.dtypes if ct == "string"]
     for cn in stringCols:
         df = df.withColumn(cn, when(col(cn) == "", brv).otherwise(col(cn)))
-        df = df.withColumn(cn, regex_replace(col(cn), '^\s+', brv))
+        df = df.withColumn(cn, regexp_replace(col(cn), '^\s+', brv))
 
     return df
 

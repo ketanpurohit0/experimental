@@ -11,14 +11,14 @@ import SparkHelper as sh
 sparkSession = sh.getSpark()
 sparkSession.sparkContext.setLogLevel("ERROR")
 
-url = sh.getUrl(db = "postgres", user = "postgres", pwd = "foobar_secret")
+url = sh.getUrl(db="postgres", user="postgres", secret="foobar_secret")
 
 # Get base data
-baseSql = "SELECT c1, c2, c_inbaseonly FROM table_V1"
+baseSql = "SELECT * FROM tslp"
 dfBaseline = sh.getQueryDataFrame(sparkSession, url, baseSql)
 
 # Get test data
-testSql = "SELECT c1, c2, c_intargetonly FROM table_V2"
+testSql = "SELECT * FROM tetl"
 dfTest = sh.getQueryDataFrame(sparkSession, url, testSql)
 
 # To a side by side compare
