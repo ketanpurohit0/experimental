@@ -11,13 +11,15 @@ import SparkHelper as sh
 sparkSession = sh.getSpark()
 sparkSession.sparkContext.setLogLevel("ERROR")
 
+url = sh.getUrl(db = "postgres", user = "postgres", pwd = "foobar_secret")
+
 # Get base data
 baseSql = "SELECT c1, c2, c_inbaseonly FROM table_V1"
-dfBaseline = sh.getQueryDataFrame(sparkSession, "pg-dev", baseSql)
+dfBaseline = sh.getQueryDataFrame(sparkSession, url, baseSql)
 
 # Get test data
 testSql = "SELECT c1, c2, c_intargetonly FROM table_V2"
-dfTest = sh.getQueryDataFrame(sparkSession, "pg-dev", testSql)
+dfTest = sh.getQueryDataFrame(sparkSession, url, testSql)
 
 # To a side by side compare
 # c1_left, c1_right, c1_same, \

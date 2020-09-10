@@ -14,8 +14,8 @@ def getSpark():
     return SparkSession.builder.appName("Test").getOrCreate()
 
 
-def getUrl(db, user, pwd):
-    return f"jdbc:postgresql://localhost/{db}?user={user}&password={pwd}"
+def getUrl(db, user, secret):
+    return f"jdbc:postgresql://localhost/{db}?user={user}&password={secret}"
 
 
 def getReader(sparkSession, url):
@@ -68,3 +68,7 @@ def replaceBlanks(df):
         df = df.withColumn(cn, regex_replace(col(cn), '^\s+', brv))
 
     return df
+
+
+def compare(sparkSession, leftDf, rightDf, tolerance, keys):
+    return leftDf
