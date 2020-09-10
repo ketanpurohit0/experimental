@@ -19,17 +19,19 @@ def getUrl(db, user, pwd):
 
 
 def getReader(sparkSession, url):
-    reader = (
+    return (
         sparkSession.read.format("jdbc")
         .option("driver", "org.postgresql.Driver")
         .option("url", url)
     )
-    return reader
 
 
 def getQueryDataFrame(sparkSession, url, query):
     reader = getReader(sparkSession, url).option("dbtable", f"({query}) T")
-    return reader.load()
+    df = reader.load()
+    df = replaceNulls(df)
+    df = replaceBlanks(df)
+    return df
 
 
 def getStandardizedType(dfType):
@@ -54,3 +56,15 @@ def replaceNulls(df):
         for (cn, ct) in df.dtypes
     }
     return df.na.fill(nullReplacementMap)
+
+
+def replaceBlanks(df):
+    from pyspark.sql.functions import col, when, lit, regex_replace
+
+    brv = standardNullReplacementMapPerStandardType.get("string", "")
+    stringCols = [cn for (cn, ct) in df.dtypes if ct == "string"]
+    for cn in stringCols:
+        df = df.withColumn(cn, when(col(cn) == "", brv).otherwise(col(cn)))
+        df = df.withColumn(cn, regex_replace(col(cn), '^\s+', brv))
+
+    return df
