@@ -65,10 +65,107 @@ def replaceBlanks(df):
     stringCols = [cn for (cn, ct) in df.dtypes if ct == "string"]
     for cn in stringCols:
         df = df.withColumn(cn, when(col(cn) == "", brv).otherwise(col(cn)))
-        df = df.withColumn(cn, regexp_replace(col(cn), '^\s+', brv))
+        df = df.withColumn(cn, regexp_replace(col(cn), "^\s+", brv))
 
     return df
 
 
-def compare(sparkSession, leftDf, rightDf, tolerance, keys):
-    return leftDf
+def compareDfs(sparkSession, leftDf, rightDf, tolerance, keysLeft, keysRight, colExcludeList, joinType):
+    from pyspark.sql.function import col, abs, lit
+
+    (leftSide_tag, rightSide_tag, boolCol_tag) = ("_left", "_right", "_same")
+    joinConditionsAsList = makeDfJoinCondition(
+        leftDf, rightDf, tolerance, keysLeft, keysRight
+    )
+    joinConditionAsString = joinCondAsString(joinConditionsAsList)
+    joinConditionObject = compileAndEval(joinConditionAsString, leftDf, rightDf)
+    (
+        colsInBoth,
+        colsInLeftOnly,
+        colsInRightOnly,
+        allLeftCols,
+        allRightCols,
+    ) = getDfColsInfo(leftDf, rightDf)
+
+    newColNamesLeft = getNewColsNames(allLeftCols, leftSide_tag)
+    newColNamesRight = getNewColsNames(allRightCols, rightSide_tag)
+
+    newColNamesAll = list(newColNamesLeft)
+    newColNamesAll.extend(newColNamesRight)
+
+    # join the two dfs using joinType (suggest full_outer)
+    df = (leftDf.join(rightDf, joinConditionObject, joinType)
+          .toDF(*newColNamesAll)
+          .select(*sorted(newColNamesAll)))
+
+    # create new column "PASS" which initially will be true but will be re-evaluated based on individual columns
+    df = df.withColumn("PASS", lit(True))
+
+    # now add a new column to hold compare results for side by side diff
+    # we can only do this for columns that exist both sides
+
+
+    return df
+
+
+def getNewColsNames(columnNameList, tag):
+    return [f"{x}{tag}" for x in columnNameList]
+
+
+def joinCondAsString(joinConditionAsList):
+    conditions = [x for x in joinCondAsString if not (x == "" or x == "None" or x is None)]
+    code = ",".join(conditions)
+    code = f"[{code}]"
+    return code
+
+
+def compileAndEval(codeStr, leftDf, rightDf):
+    # leftDf and rightDf are required to provide local context for eval
+    compiledCode = compile(codeStr, "<string>", "eval")
+    return eval(compiledCode)
+
+
+def getDfColsInfo(leftDf, rightDf):
+    # order is important
+    colsInBoth = [x for x in leftDf.columns if x in rightDf.columns]
+    colsInLeftOnly = [x for x in leftDf.columns if x not in rightDf.columns]
+    colsInRightOnly = [x for x in rightDf.columns if x not in leftDf.columns]
+    allLeftCols = list(leftDf.columns)
+    allRightCols = list(rightDf.columns)
+    return (colsInBoth, colsInLeftOnly, colsInRightOnly, allLeftCols, allRightCols)
+
+
+def makeDfJoinCondition(leftDf, rightDf, tolerance, keysLeft, keysRight):
+    leftTypesMap = dict(leftDf.dtypes)
+    rightTypesMap = dict(rightDf.dtypes)
+    leftKeysList = [x.strip() for x in keysLeft.split(",")]
+    rightKeysList = [x.strip() for x in keysRight.split(",")]
+    keyByKey = zip(leftKeysList, rightKeysList)
+    conditions = [
+        makeDfConditionWithTolerance(
+            lname, leftTypesMap[lname], rname, rightTypesMap[rname], tolerance
+        )
+        for (lname, rname) in keyByKey
+    ]
+    return conditions
+
+
+def makeDfConditionWithTolerance(leftColName, leftColType, rightColName, rightColType, tolerance):
+    if (isDoubleType(leftColType, rightColType)):
+        return makeDoubleJoinCond(leftColName, rightColName, tolerance)
+    else:
+        return makeNormalJoinCond(leftColName, rightColName)
+
+
+def isDoubleType(leftColType, rightColType):
+    listDoubleType = ["double", "decimal"]
+    return leftColType in listDoubleType or rightColType in listDoubleType
+
+
+def makeDoubleJoinCond(leftColName, rightColName, tolerance):
+    innerTolerance = tolerance + 0.000001
+    return (f"(leftDf['{leftColName}'] - rightDf['{rightColName}']).between({-innerTolerance},{innerTolerance})")
+
+
+def makeNormalJoinCond(leftColName, rightColName):
+    return(f"leftDf['{leftColName}'] == rightDf['{rightColName}']")

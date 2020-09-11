@@ -25,7 +25,14 @@ dfTest = sh.getQueryDataFrame(sparkSession, url, testSql)
 # c1_left, c1_right, c1_same, \
 # c2_left, c2_right, c2_same, \
 # c_inbaseonly, c_intargetonly
-dfResult = sh.compare(sparkSession, dfBaseline, dfTest, tolerance=0.1, keys="c1,c2")
+dfResult = sh.compareDfs(sparkSession,
+                         dfBaseline,
+                         dfTest,
+                         tolerance=0.1,
+                         keysLeft="c1,c2",
+                         keysRight="c1,c2",
+                         colExcludeList=None,
+                         joinType="full_outer")
 
 # now write to csv or parquet
 
