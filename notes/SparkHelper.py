@@ -71,7 +71,7 @@ def replaceBlanks(df):
 
 
 def compareDfs(sparkSession, leftDf, rightDf, tolerance, keysLeft, keysRight, colExcludeList, joinType):
-    from pyspark.sql.function import col, abs, lit
+    from pyspark.sql.functions import col, abs, lit
 
     (leftSide_tag, rightSide_tag, boolCol_tag) = ("_left", "_right", "_same")
     joinConditionsAsList = makeDfJoinCondition(
@@ -89,6 +89,12 @@ def compareDfs(sparkSession, leftDf, rightDf, tolerance, keysLeft, keysRight, co
 
     newColNamesLeft = getNewColsNames(allLeftCols, leftSide_tag)
     newColNamesRight = getNewColsNames(allRightCols, rightSide_tag)
+  
+    colDictOldNameToNewNames = {}
+    for item in colsInLeftOnly:
+        colDictOldNameToNewNames[item] = (f"{item}{leftSide_tag}", None, None)
+    for item in colsInRightOnly:
+        colDictOldNameToNewNames[item] = (None, f"{item}{leftSide_tag}", None)
 
     newColNamesAll = list(newColNamesLeft)
     newColNamesAll.extend(newColNamesRight)
@@ -103,7 +109,39 @@ def compareDfs(sparkSession, leftDf, rightDf, tolerance, keysLeft, keysRight, co
 
     # now add a new column to hold compare results for side by side diff
     # we can only do this for columns that exist both sides
+    dictOfColDTypes = dict(df.dtypes)
+    colsToCompare = list(colsInBoth)
+    for colInBoth in colsToCompare:
+        leftCol = f"{colInBoth}{leftSide_tag}"
+        rightCol = f"{colInBoth}{rightSide_tag}"
+        newBoolCol = f"{colInBoth}{boolCol_tag}"
+        if (colInBoth in colExcludeList):
+            df = df.withColumn(newBoolCol, lit(True))
+        else:
+            if leftCol in dictOfColDTypes:
+                leftColType = dictOfColDTypes[leftCol]
+                righColType = dictOfColDTypes[rightCol]
+                if (isDoubleType(leftColType, righColType)):
+                    df = df.withColumn(newBoolCol, abs(col(leftCol) - col(rightCol)) < tolerance)
+                else:
+                    df = df.withColumn(newBoolCol, col(leftCol) == col(rightCol))
 
+        colDictOldNameToNewNames[colInBoth] = (leftCol, rightCol, newBoolCol)
+        df.withColumn("PASS", col("PASS") & col(newBoolCol))
+        newColNamesAll.append(newBoolCol)
+
+        # - return data in its natural order list (ie the order as it existed in original dataframes)
+    naturalOrderList = ["PASS"]
+    for item in colsInBoth:
+        tup = colDictOldNameToNewNames.get(item)
+        naturalOrderList.extend(list(tup))
+    for item in colsInLeftOnly:
+        (a, b, c) = colDictOldNameToNewNames.get(item)
+        naturalOrderList.append(a)
+    for item in colsInRightOnly:
+        (a, b, c) = colDictOldNameToNewNames.get(item)
+        naturalOrderList.append(b)
+    df = df.select(*naturalOrderList)
 
     return df
 

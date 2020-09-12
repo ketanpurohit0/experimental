@@ -33,6 +33,9 @@ dfResult = sh.compareDfs(sparkSession,
                          keysRight="c1,c2",
                          colExcludeList=None,
                          joinType="full_outer")
+                        
+print(dfResult.count())
+print(dfResult.columns)
 
 # now write to csv or parquet
 
