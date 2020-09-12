@@ -151,7 +151,7 @@ def getNewColsNames(columnNameList, tag):
 
 
 def joinCondAsString(joinConditionAsList):
-    conditions = [x for x in joinCondAsString if not (x == "" or x == "None" or x is None)]
+    conditions = [x for x in joinConditionAsList if not (x == "" or x == "None" or x is None)]
     code = ",".join(conditions)
     code = f"[{code}]"
     return code

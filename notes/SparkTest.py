@@ -29,13 +29,10 @@ dfResult = sh.compareDfs(sparkSession,
                          dfBaseline,
                          dfTest,
                          tolerance=0.1,
-                         keysLeft="c1,c2",
-                         keysRight="c1,c2",
-                         colExcludeList=None,
+                         keysLeft="bsr",
+                         keysRight="bsr",
+                         colExcludeList=[],
                          joinType="full_outer")
-                        
-print(dfResult.count())
-print(dfResult.columns)
 
 # now write to csv or parquet
 
